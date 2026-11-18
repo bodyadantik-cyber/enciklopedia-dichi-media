@@ -5,7 +5,9 @@ Language: Russian. Format: vertical 1080×1920, 30 fps, 40–55 s, documentary-t
 Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352`.
 
 ## 1. Topic
-- Read `topics.md` — never repeat a topic listed there.
+- Read `topics.md` — never repeat a used topic. **Take the next item from the Backlog first**; if a series
+  Part 1 was published yesterday, today is its Part 2. Only when the backlog is empty, find new topics as below
+  and refill the backlog with 5–10 ideas.
 - Look at what works: vidIQ (`vidiq_instagram_tiktok_outlier_search`, `vidiq_trending_videos`, `vidiq_outliers`)
   for facts / history / science / space / mysteries in Russian and English. Windsor (`tiktok_organic`, `youtube`)
   for our own last videos' views — lean toward what performed best.
