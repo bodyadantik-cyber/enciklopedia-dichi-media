@@ -29,18 +29,20 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
   `generations_count: 1`.
 
 ## 4. Visuals (6–8 images)
-- Figma `generate_image` into file `jMJ8vZ7sttWibAXAnajdlD`, 1024×1820 (9:16), cinematic photoreal prompts,
-  always end prompts with "no text". One image per beat of the story. (ElevenLabs `creative_generate_image`
-  is an alternative.)
+- ElevenLabs (full connector, the one that has `creative_generate_image`): `creative_create_flow`, then for each image
+  `creative_add_flow_node` (node_type `image-generation`, model `gpt-image-2.5-sunburst`) →
+  `creative_update_node` with `model_parameters: {"aspect_ratio": "9:16", "resolution": "1K", "quality": "high"}` and the prompt →
+  `creative_run_flow_nodes` with `generations_count: 1` (all image nodes in one call). Do NOT use
+  `creative_generate_image` directly: it starts at 16:9 before you can set the aspect.
+- Cinematic photoreal prompts, one image per beat of the story, always end with "no text".
+- Fallback if ElevenLabs credits run out: Figma `generate_image` into file `jMJ8vZ7sttWibAXAnajdlD`, 1024×1820.
 
 ## 5. Getting files into the workspace
-The workspace cannot download from figma.com / elevenlabsusercontent.com directly. Use the built-in browser on the
-owner's computer (`mcp__remote-devices__Claude_Browser__*`):
-- navigate to `https://www.figma.com/design/jMJ8vZ7sttWibAXAnajdlD`, then `javascript_tool`: fetch each
-  `https://www.figma.com/api/mcp/asset/<id>.png`, blob → `<a download="NNN_img_0X.png">` click, 1.5 s apart, wait 3 s.
-- for the voice: navigate to its content_url (from `creative_get_flow_run_status`), then fetch(location.href) → download `NNN_voice.mp3`.
-- `device_stage_files` from `C:\Users\bodya\Downloads\` → `/mnt/user-data/uploads/Downloads/`.
-  If a file shows up as `<uuid>.tmp`, stage that file and rename it.
+- ElevenLabs images and voice: `creative_get_flow_run_status` → each generation's `content_url` →
+  `curl -sS -o NAME "<content_url>"` directly from the workspace (elevenlabsusercontent.com is allowed).
+- Figma assets (fallback only): try `curl https://www.figma.com/api/mcp/asset/<id>.png`; if the proxy refuses it,
+  the only route is the owner's computer (built-in browser download, then `device_stage_files` from the Downloads
+  folder) — if the computer is not reachable, use ElevenLabs instead.
 
 ## 6. Timing + spec
 - `ffmpeg -i voice.mp3 -af silencedetect=noise=-35dB:d=0.25 -f null -` → speech segments between silences.
@@ -63,7 +65,7 @@ owner's computer (`mcp__remote-devices__Claude_Browser__*`):
   tiktokData: title ≤ 90 chars, privacyOption PUBLIC_TO_EVERYONE, isAigc true;
   youtubeData: type short, title ≤ 70 chars + " #shorts", privacy public, category EDUCATION, madeForKids false,
   isAiGeneratedContent true, 8–12 tags.
-- Also send the mp4 to the owner (SendUserFile) and copy it to `C:\Users\bodya\Downloads\`.
+- Also send the mp4 to the owner (SendUserFile).
 
 ## 9. Report
 SendUserMessage in Russian: topic, title, caption, the Metricool planner link, and anything that went wrong.
