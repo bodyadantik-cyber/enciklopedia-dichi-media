@@ -4,6 +4,9 @@ Channel: TikTok `@enciklopedia.dichi`, YouTube «энциклопедии дич
 Language: Russian. Format: vertical 1080×1920, 30 fps, 40–55 s, documentary-thriller tone.
 Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352`.
 
+**Time:** the container clock is UTC even if `TZ=Europe/Kiev date` prints "Europe". Get Kyiv time with
+`python3 -c "from zoneinfo import ZoneInfo;from datetime import datetime;print(datetime.now(ZoneInfo('Europe/Kyiv')))"`.
+
 ## 1. Topic
 - Read `topics.md` — never repeat a used topic. **Take the next item from the Backlog first**; if a series
   Part 1 was published yesterday, today is its Part 2. Only when the backlog is empty, find new topics as below
@@ -35,7 +38,8 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
   `creative_run_flow_nodes` with `generations_count: 1` (all image nodes in one call). Do NOT use
   `creative_generate_image` directly: it starts at 16:9 before you can set the aspect.
 - Cinematic photoreal prompts, one image per beat of the story, always end with "no text".
-- Fallback if ElevenLabs credits run out: Figma `generate_image` into file `jMJ8vZ7sttWibAXAnajdlD`, 1024×1820.
+- Fallback if ElevenLabs credits / the free daily image limit run out: Figma `generate_image` (model gpt-image-2.5-sunburst)
+  into file `jMJ8vZ7sttWibAXAnajdlD`, 1024×1820 — the returned `image.url` downloads fine with `curl -f -L` (checked 23.11.2026).
 
 ## 5. Getting files into the workspace
 - ElevenLabs images and voice: `creative_get_flow_run_status` → each generation's `content_url` →
@@ -59,8 +63,10 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
 ## 8. Publish (owner confirms)
 - Commit + push `videos/NNN_slug.mp4`, `specs/NNN_slug.json`, update `topics.md` (date, topic, title).
 - Public URL: `https://raw.githubusercontent.com/bodyadantik-cyber/enciklopedia-dichi-media/main/videos/NNN_slug.mp4`
-- Metricool `createScheduledPost`, blogId `8195352`, publication 12:00 Europe/Kiev today, providers tiktok + youtube,
-  **`autoPublish: false`** (owner gets a push in the Metricool app and publishes with one tap),
+- Metricool `createScheduledPost`, blogId `8195352`, ONE post with providers tiktok + youtube (same time for both),
+  time per the routine's rule (12:00 Europe/Kiev by default), **`autoPublish: true`** — Metricool publishes to both
+  networks by itself, no confirmation needed. (With `autoPublish: false` TikTok only lands in the TikTok app's
+  drafts/inbox and does not go public — that is why it was switched off on 23.11.2026.)
   text = caption with a comment-bait question + 6–8 hashtags (always `#энциклопедиядичи`),
   tiktokData: title ≤ 90 chars, privacyOption PUBLIC_TO_EVERYONE, isAigc true;
   youtubeData: type short, title ≤ 70 chars + " #shorts", privacy public, category EDUCATION, madeForKids false,
