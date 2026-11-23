@@ -8,8 +8,13 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
 `python3 -c "from zoneinfo import ZoneInfo;from datetime import datetime;print(datetime.now(ZoneInfo('Europe/Kyiv')))"`.
 
 ## 1. Topic
-- Read `topics.md` — never repeat a used topic. **Take the next item from the Backlog first**; if a series
-  Part 1 was published yesterday, today is its Part 2. Only when the backlog is empty, find new topics as below
+- Read `topics.md` — never repeat a used topic. **Take the next item from the Backlog first**.
+- **Series (Часть 1 / Часть 2 / …): make ALL parts in the same run and publish them the SAME DAY at different
+  times**: Part 1 at the normal slot (12:00 by default), each next part +6 h (12:00 → 18:00; a third part 21:00).
+  If the next slot would be later than 22:00, use a 3-hour gap instead; if even that does not fit, the remaining
+  parts go to 12:00 / 18:00 of the next day. Each part is its own video, spec, commit and Metricool post.
+  Part 1's end card and caption name the time of Part 2 (e.g. «ЧАСТЬ 2 — СЕГОДНЯ В 18:00»).
+  If a series Part 1 was already published earlier and Part 2 is still missing, make Part 2 first. Only when the backlog is empty, find new topics as below
   and refill the backlog with 5–10 ideas.
 - Look at what works: vidIQ (`vidiq_instagram_tiktok_outlier_search`, `vidiq_trending_videos`, `vidiq_outliers`)
   for facts / history / science / space / mysteries in Russian and English. Windsor (`tiktok_organic`, `youtube`)
