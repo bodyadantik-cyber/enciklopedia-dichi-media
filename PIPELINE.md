@@ -1,7 +1,7 @@
 # «Энциклопедия дичи» — daily video pipeline
 
 Channel: TikTok `@enciklopedia.dichi`, YouTube «энциклопедии дичи» (UCgmhWB3uri4npe9zoDaFM-w).
-Language: Russian. Format: vertical 1080×1920, 30 fps, 40–55 s, documentary-thriller tone.
+Language: Russian. Format: vertical 1080×1920, 30 fps, **30–40 s** (since 23.11.2026: shorter = better completion on a new account), documentary-thriller tone.
 Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352`.
 
 **Time:** the container clock is UTC even if `TZ=Europe/Kiev date` prints "Europe". Get Kyiv time with
@@ -10,10 +10,9 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
 ## 1. Topic
 - Read `topics.md` — never repeat a used topic. **Take the next item from the Backlog first**.
 - **Series (Часть 1 / Часть 2 / …): make ALL parts in the same run and publish them the SAME DAY at different
-  times**: Part 1 at the normal slot (12:00 by default), each next part +6 h (12:00 → 18:00; a third part 21:00).
-  If the next slot would be later than 22:00, use a 3-hour gap instead; if even that does not fit, the remaining
-  parts go to 12:00 / 18:00 of the next day. Each part is its own video, spec, commit and Metricool post.
-  Part 1's end card and caption name the time of Part 2 (e.g. «ЧАСТЬ 2 — СЕГОДНЯ В 18:00»).
+  times**: Part 1 at 18:00, Part 2 at 21:00 (a third part goes to 18:00 of the next day).
+  If the run is too late for that, the parts go to 18:00 / 21:00 of the next day. Each part is its own video, spec, commit and Metricool post.
+  Part 1's end card and caption name the time of Part 2 (e.g. «ЧАСТЬ 2 — СЕГОДНЯ В 21:00»).
   If a series Part 1 was already published earlier and Part 2 is still missing, make Part 2 first. Only when the backlog is empty, find new topics as below
   and refill the backlog with 5–10 ideas.
 - Look at what works: vidIQ (`vidiq_instagram_tiktok_outlier_search`, `vidiq_trending_videos`, `vidiq_outliers`)
@@ -23,9 +22,13 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
   space, deep sea, animals, human body, lost civilisations). No politics, no medical advice, no real private people,
   no copyrighted characters.
 
-## 2. Script (≈110–130 Russian words → ~45–50 s of speech)
-- Hook in the first sentence (shock number / paradox / "this happened for real").
-- 6–9 short sentences, concrete numbers, one comparison the viewer can feel, a quiet last line.
+## 2. Script (≈70–90 Russian words → ~30–38 s of speech)
+- Hook in the first sentence (shock number / paradox / "this happened for real"), max ~8 words.
+- **The same hook is on screen as big text from frame 0** (a `labels` entry 0.0–~2.5 s, size 60–64, red) —
+  most viewers scroll with sound off.
+- 5–7 short sentences, concrete numbers, one comparison the viewer can feel.
+- **Loop ending**: the last line should flow back into the first line (e.g. ends on a question the hook answers),
+  so a rewatch feels seamless. No long outro — end card ≤1.5 s.
 - Every number must be checked with WebSearch against ≥2 independent sources. Then spawn a separate
   fact-check agent (Agent tool, general-purpose) given ONLY the script, asking it to verify each claim with sources
   and list anything wrong. Fix everything it flags before generating audio.
@@ -69,7 +72,7 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
 - Commit + push `videos/NNN_slug.mp4`, `specs/NNN_slug.json`, update `topics.md` (date, topic, title).
 - Public URL: `https://raw.githubusercontent.com/bodyadantik-cyber/enciklopedia-dichi-media/main/videos/NNN_slug.mp4`
 - Metricool `createScheduledPost`, blogId `8195352`, ONE post with providers tiktok + youtube (same time for both),
-  time per the routine's rule (12:00 Europe/Kiev by default), **`autoPublish: true`** — Metricool publishes to both
+  time per the routine's rule (**18:00 Europe/Kiev by default**; series parts 18:00 and 21:00), **`autoPublish: true`** — Metricool publishes to both
   networks by itself, no confirmation needed. (With `autoPublish: false` TikTok only lands in the TikTok app's
   drafts/inbox and does not go public — that is why it was switched off on 23.11.2026.)
   text = caption with a comment-bait question + 6–8 hashtags (always `#энциклопедиядичи`),
