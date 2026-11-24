@@ -6,7 +6,7 @@
 | 002 | 2026-11-24 12:00 (made 22.11, never posted — re-scheduled) | Dancing plague, Strasbourg 1518 | Город, который не мог перестать танцевать |
 | 003 | 2026-11-23 | Dyatlov Pass 1959 — Part 1 (tent cut from inside, footprints) | Перевал Дятлова. Часть 1: палатку разрезали изнутри |
 | 004 | 2026-11-23 18:00 | Dyatlov Pass 1959 — Part 2 (what was found, 1959 verdict, 2020 avalanche conclusion, 2021 model) | Перевал Дятлова. Часть 2: что нашли и что решило следствие |
-| 005 | 2026-11-24 18:00 | Tunguska event 1908 (tens of millions of trees, >2000 km², no crater, airburst) | Взрыв повалил лес размером с город — а кратера нет |
+| 005 | 2026-11-24 18:00 | Tunguska event 1908 (tens of millions of trees, >2000 km², no crater, airburst) — first CARTOON-style video (videos/005_tungusskiy_vzryv_v2.mp4) | Взрыв повалил лес размером с город — а кратера нет |
 
 # Backlog (take from the top, strike through / move to the table above when used)
 

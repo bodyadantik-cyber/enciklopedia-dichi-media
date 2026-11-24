@@ -67,10 +67,38 @@ SCENES = SPEC["scenes"]
 XF = 0.25
 
 SRC = {}
-def load(i):
+VIDEOS = SPEC.get("videos", {})   # {"v1": {"file": "clip.mp4", "speed": 1.0}} -> scene img key "v1"
+VFRAMES = {}
+def video_frames(key):
+    if key not in VFRAMES:
+        path = os.path.join(BASE, VIDEOS[key]["file"])
+        d = path + ".frames"
+        if not os.path.isdir(d) or not os.listdir(d):
+            os.makedirs(d, exist_ok=True)
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", path, "-vf", f"fps={FPS}",
+                            "-q:v", "2", os.path.join(d, "f_%04d.jpg")], check=True)
+        VFRAMES[key] = sorted(os.path.join(d, f) for f in os.listdir(d))
+    return VFRAMES[key]
+
+def load(i, trel=None):
     i = str(i)
+    if i in VIDEOS:
+        fr = video_frames(i)
+        n = int((trel or 0) * VIDEOS[i].get("speed", 1.0) * FPS)
+        n = min(max(n, 0), len(fr) - 1)
+        key = (i, n)
+        if key not in SRC:
+            if len(SRC) > 40:
+                for k in [k for k in SRC if isinstance(k, tuple)][:20]:
+                    del SRC[k]
+            SRC[key] = prep(Image.open(fr[n]).convert("RGB"))
+        return SRC[key]
     if i not in SRC:
-        im = Image.open(os.path.join(BASE, SPEC["images"][i])).convert("RGB")
+        SRC[i] = prep(Image.open(os.path.join(BASE, SPEC["images"][i])).convert("RGB"))
+    return SRC[i]
+
+def prep(im):
+    if True:
         iw, ih = im.size
         # cover-crop to 9:16
         tr = W / H
@@ -85,8 +113,7 @@ def load(i):
         a = a * 0.9 + lum * 0.1
         a[..., 0] = np.clip(a[..., 0] * 1.04, 0, 1)
         a[..., 2] = np.clip(a[..., 2] * 0.98, 0, 1)
-        SRC[i] = Image.fromarray((a * 255).astype(np.uint8))
-    return SRC[i]
+        return Image.fromarray((a * 255).astype(np.uint8))
 
 def ease(x):
     x = min(max(x, 0), 1); return 0.5 - 0.5 * math.cos(math.pi * x)
@@ -98,7 +125,7 @@ def scene_frame(sc, t, shake=(0, 0)):
     s, e, img, z0, z1, f0, f1 = sc
     pe = ease((t - s) / (e - s))
     z = z0 + (z1 - z0) * pe + 0.06 * max(0, 1 - (t - s) / 0.35) ** 2
-    src = load(img)
+    src = load(img, t - s)
     sw, sh = src.size
     cw, ch = W * 1.5 / z, H * 1.5 / z
     cx = (f0[0] + (f1[0] - f0[0]) * pe) * sw + shake[0] * 1.5

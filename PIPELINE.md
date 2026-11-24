@@ -39,13 +39,31 @@ Owner: Kyiv time (Europe/Kiev). Publishing goes through Metricool brand `8195352
 - ElevenLabs `creative_generate_speech`, model `eleven_v4`, voice `ogi2DyUAKJb7CEdqqvlU` (Stanislav, deep RU),
   `generations_count: 1`.
 
-## 4. Visuals (6–8 images)
+## 4. Visuals (6–8 images) — CARTOON STYLE by default (since 24.11.2026, owner's choice)
+- **Style:** 2D cartoon, modern animated-explainer look — flat colours with soft cel shading, bold dark outlines,
+  subtle warm glow outline around the main character, expressive characters (simple round faces, big round white eyes,
+  clear emotions and gestures). Start EVERY image prompt with:
+  "Vertical 2D cartoon illustration, modern animated explainer style: flat colors with soft cel shading, bold dark outlines, a subtle warm glow outline around the main character."
+- **Characters:** each story gets its own cast. Before prompting, write a fixed one-line look for every character
+  (face, hair/beard, clothes, colours — e.g. "black bushy beard, brown cap, white linen peasant shirt with a red belt")
+  and repeat it word for word in every image where they appear, so they stay recognisable. Show them DOING the beat
+  (gesture, emotion), not posing. Real historical people: generic cartoon look, no attempt at a likeness.
+  Never copy a known cartoon character or another channel's mascot.
+- **Movement (characters move and gesture):** animate the 2–8 key frames with image-to-video and put the clips into the spec
+  as `videos` (see `tools/render.py`: `"videos": {"v1": {"file": "clip.mp4", "speed": 1.0}}`, scene image key `"v1"`,
+  Ken Burns zoom ~1.0→1.06 on video scenes). Tools, in order: Figma Weave `weave_run_model` with Seedance 2.0 Mini
+  (id `c11c3ef1-32d2-48b4-83e9-0cc2a5599646`, 5 s, 720p, 9:16, generate_audio false, ~65 Weave credits/clip; prompt =
+  "2D cartoon animation, keep the exact art style and character. <action>"), or ElevenLabs video models if credits allow.
+  Download the result with curl. Priority: the hook scene and the scenes with people. **If no video credits are left
+  (Weave free runs were used up on 24.11.2026), do not stop:** render the cartoon stills with the normal Ken Burns motion
+  and say in the report that animation needs Weave/ElevenLabs credits.
+- 005 (Tunguska) is the reference example of this style.
 - ElevenLabs (full connector, the one that has `creative_generate_image`): `creative_create_flow`, then for each image
   `creative_add_flow_node` (node_type `image-generation`, model `gpt-image-2.5-sunburst`) →
   `creative_update_node` with `model_parameters: {"aspect_ratio": "9:16", "resolution": "1K", "quality": "high"}` and the prompt →
   `creative_run_flow_nodes` with `generations_count: 1` (all image nodes in one call). Do NOT use
   `creative_generate_image` directly: it starts at 16:9 before you can set the aspect.
-- Cinematic photoreal prompts, one image per beat of the story, always end with "no text".
+- One image per beat of the story, always end with "No text."
 - Fallback if ElevenLabs credits / the free daily image limit run out: Figma `generate_image` (model gpt-image-2.5-sunburst)
   into file `jMJ8vZ7sttWibAXAnajdlD`, 1024×1820 — the returned `image.url` downloads fine with `curl -f -L` (checked 23.11.2026).
 
